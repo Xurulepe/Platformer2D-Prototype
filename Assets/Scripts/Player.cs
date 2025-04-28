@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Vector2 groundJumpDirection = Vector2.up;
     [SerializeField] private Vector2 wallJumpDirection;
     [SerializeField] private bool doubleJump;
+    [SerializeField] private bool wallJumping;
 
     [Header("Ground")]
     [SerializeField] private Transform groundCheckPos;
@@ -38,7 +39,6 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        IsWalled();  //
         GroundCheck();
         Flip();
     }
@@ -52,11 +52,24 @@ public class Player : MonoBehaviour
     public void SetMove(InputAction.CallbackContext value)
     {
         moveInput.x = value.ReadValue<Vector2>().x;
+
+        if (wallJumping && value.performed)
+        {
+            wallJumping = false;
+        }
     }
 
     private void Move()
     {
-        rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
+        if (!wallJumping)  // move-se normalmente se não estiver pulando em paredes
+        {
+            rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
+        }
+        else if(wallJumping && IsGrounded())  // para de se mover após um salto de uma parede ao tocar no chão
+        {
+            rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
+        }
+        
     }
     #endregion
 
@@ -72,7 +85,8 @@ public class Player : MonoBehaviour
         {
             Jump(wallJumpDirection);
             doubleJump = true;
-            Debug.Log("Wall Jump");
+            wallJumping = true;
+            ForceFlip();
         }
         else if (value.performed && doubleJump)
         {
@@ -83,8 +97,7 @@ public class Player : MonoBehaviour
 
     private void Jump(Vector2 jumpDirection)
     {
-        //rb.AddForce(jumpDirection * jumpForce, ForceMode2D.Impulse);
-        rb.linearVelocity = jumpDirection * jumpForce;
+        rb.AddForce(jumpDirection * jumpForce, ForceMode2D.Impulse);
     }
     #endregion
 
@@ -106,8 +119,7 @@ public class Player : MonoBehaviour
     {
         if (Physics2D.OverlapBox(wallCheckPos.position, wallCheckSize, 0f, wallLayer))
         {
-            wallJumpDirection = new Vector2(-transform.localScale.x * 7f, 1f);
-            //rb.linearVelocity = new Vector2(-transform.localScale.x * 10, rb.linearVelocity.y);
+            wallJumpDirection = new Vector2(-transform.localScale.x, 1f);
             return true;
         }
         return false;
@@ -125,6 +137,12 @@ public class Player : MonoBehaviour
         {
             transform.localScale = new Vector3(-1, 1, 1);
         }
+    }
+
+    private void ForceFlip()
+    {
+        float localScaleX = transform.localScale.x;
+        transform.localScale = new Vector3(-localScaleX, 1, 1);
     }
 #endregion
 }
