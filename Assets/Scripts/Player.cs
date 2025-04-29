@@ -24,6 +24,8 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform wallCheckPos;
     [SerializeField] private Vector2 wallCheckSize = new Vector2(0.3f, 1.7f);
     [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private bool isWallSliding;
+    [SerializeField] private float wallSlidindSpeed;
 
     private Rigidbody2D rb;
 
@@ -32,14 +34,10 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    private void Start()
-    {
-
-    }
-
     private void Update()
     {
         GroundCheck();
+        WallSlideCheck();
         Flip();
     }
 
@@ -61,7 +59,11 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
-        if (!wallJumping)  // move-se normalmente se não estiver pulando em paredes
+        if (isWallSliding)  // wall sliding
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Clamp(rb.linearVelocity.y, -wallSlidindSpeed, float.MaxValue));
+        }
+        else if (!wallJumping)  // move-se normalmente se não estiver pulando em paredes
         {
             rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
         }
@@ -69,7 +71,6 @@ public class Player : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
         }
-        
     }
     #endregion
 
@@ -123,6 +124,18 @@ public class Player : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    private void WallSlideCheck()
+    {
+        if (!IsGrounded() && IsWalled() && moveInput.x != 0)  // wall sliding
+        {
+            isWallSliding = true;
+        }
+        else
+        {
+            isWallSliding = false;
+        }
     }
     #endregion
 
