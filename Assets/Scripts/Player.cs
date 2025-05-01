@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEngine.LightAnchor;
 
 public class Player : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private Vector2 moveInput;
+    [SerializeField] private bool isWalking;
 
     [Header("Jump")]
     [SerializeField] private float jumpForce = 5f;
@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Vector2 wallJumpDirection;
     [SerializeField] private bool doubleJump;
     [SerializeField] private bool wallJumping;
+    [SerializeField] private bool isJumping;
 
     [Header("Ground")]
     [SerializeField] private Transform groundCheckPos;
@@ -28,10 +29,12 @@ public class Player : MonoBehaviour
     [SerializeField] private float wallSlidindSpeed;
 
     private Rigidbody2D rb;
+    private Animator anim;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     private void Update()
@@ -39,6 +42,7 @@ public class Player : MonoBehaviour
         GroundCheck();
         WallSlideCheck();
         Flip();
+        Animation();
     }
 
     private void FixedUpdate()
@@ -50,6 +54,8 @@ public class Player : MonoBehaviour
     public void SetMove(InputAction.CallbackContext value)
     {
         moveInput.x = value.ReadValue<Vector2>().x;
+
+        isWalking = value.performed;
 
         if (wallJumping && value.performed)
         {
@@ -87,7 +93,7 @@ public class Player : MonoBehaviour
             Jump(wallJumpDirection);
             doubleJump = true;
             wallJumping = true;
-            ForceFlip();
+            Invoke(nameof(ForceFlip), 0.1f);
         }
         else if (value.performed && doubleJump)
         {
@@ -98,7 +104,13 @@ public class Player : MonoBehaviour
 
     private void Jump(Vector2 jumpDirection)
     {
+        Invoke(nameof(UpdateJump), 0.1f);
         rb.AddForce(jumpDirection * jumpForce, ForceMode2D.Impulse);
+    }
+
+    void UpdateJump()
+    {
+        isJumping = true;
     }
     #endregion
 
@@ -112,6 +124,7 @@ public class Player : MonoBehaviour
     {
         if (IsGrounded())
         {
+            isJumping = false;
             doubleJump = true;
         }
     }
@@ -157,5 +170,14 @@ public class Player : MonoBehaviour
         float localScaleX = transform.localScale.x;
         transform.localScale = new Vector3(-localScaleX, 1, 1);
     }
-#endregion
+    #endregion
+
+    #region Animation
+    private void Animation()
+    {
+        anim.SetBool("isWalking", isWalking);
+        anim.SetBool("isJumping", isJumping);
+        anim.SetBool("isWallSliding", isWallSliding);
+    }
+    #endregion
 }
