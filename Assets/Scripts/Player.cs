@@ -28,6 +28,13 @@ public class Player : MonoBehaviour
     [SerializeField] private bool isWallSliding;
     [SerializeField] private float wallSlidindSpeed;
 
+    [Header("Dash")]
+    [SerializeField] private bool canDash = true;
+    [SerializeField] private bool isDashing;
+    [SerializeField] private float dashSpeed = 10f;
+    [SerializeField] private float dashDuration = 0.2f;
+    [SerializeField] private float dashCooldown = 1f;
+
     private Rigidbody2D rb;
     private Animator anim;
 
@@ -65,6 +72,8 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
+        if (isDashing) return;  // se estiver dando dash, não se move
+
         if (isWallSliding)  // wall sliding
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Clamp(rb.linearVelocity.y, -wallSlidindSpeed, float.MaxValue));
@@ -111,6 +120,37 @@ public class Player : MonoBehaviour
     void UpdateJump()
     {
         isJumping = true;
+    }
+    #endregion
+
+    #region Player dash
+    public void SetDash(InputAction.CallbackContext value)
+    {
+        if (value.performed && canDash)
+        {
+            Dash();
+        }
+    }
+
+    private void Dash()
+    {
+        isDashing = true;
+        canDash = false;
+
+        rb.linearVelocity = new Vector2(transform.localScale.x * dashSpeed, rb.linearVelocity.y);
+
+        Invoke(nameof(EndDash), dashDuration);
+        Invoke(nameof(ResetDash), dashCooldown);
+    }
+
+    private void EndDash()
+    {
+        isDashing = false;
+    }
+
+    private void ResetDash()
+    {
+        canDash = true;
     }
     #endregion
 
@@ -178,6 +218,7 @@ public class Player : MonoBehaviour
         anim.SetBool("isWalking", isWalking);
         anim.SetBool("isJumping", isJumping);
         anim.SetBool("isWallSliding", isWallSliding);
+        anim.SetBool("isDashing", isDashing);
     }
     #endregion
 }
