@@ -35,6 +35,12 @@ public class Player : MonoBehaviour
     [SerializeField] private float dashDuration = 0.2f;
     [SerializeField] private float dashCooldown = 1f;
 
+    [Header("Item Collection")]
+    [SerializeField] private Transform itemCheckPos;
+    [SerializeField] private Vector2 itemCheckSize = new Vector2(1f, 1.5f);
+    [SerializeField] private LayerMask itemLayer;
+
+    // Component references
     private Rigidbody2D rb;
     private Animator anim;
 
@@ -46,6 +52,8 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        CheckForItems();
+
         GroundCheck();
         WallSlideCheck();
         Flip();
@@ -221,4 +229,34 @@ public class Player : MonoBehaviour
         anim.SetBool("isDashing", isDashing);
     }
     #endregion
+
+    #region Item Collection
+    private void CheckForItems()
+    {
+        Vector2 boxcastDirection = new Vector2(transform.localScale.x, 0f);
+        RaycastHit2D hit = Physics2D.BoxCast(itemCheckPos.position, itemCheckSize, 0f, boxcastDirection, 0f, itemLayer);
+
+        if (hit.collider == null) return;
+
+        if (hit.collider.CompareTag("Coin"))
+        {
+            CollectCoin(hit.collider.gameObject);
+        }
+        // implementar outros itens / power ups
+    }
+
+    private void CollectCoin(GameObject coin)
+    {
+        Debug.Log("Coin collected!");
+        coin.SetActive(false);
+    }
+    #endregion
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        //Gizmos.DrawWireCube(groundCheckPos.position, groundCheckSize);
+        //Gizmos.DrawWireCube(wallCheckPos.position, wallCheckSize);
+        Gizmos.DrawWireCube(itemCheckPos.position, itemCheckSize);
+    }
 }
