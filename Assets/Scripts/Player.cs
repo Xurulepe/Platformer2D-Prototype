@@ -7,6 +7,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private Vector2 moveInput;
     [SerializeField] private bool isWalking;
+    [SerializeField] private bool startedFalling;
+    [SerializeField] private bool isFalling;
 
     [Header("Jump")]
     [SerializeField] private float jumpForce = 5f;
@@ -30,6 +32,7 @@ public class Player : MonoBehaviour
 
     [Header("Dash")]
     [SerializeField] private bool canDash = true;
+    [SerializeField] private bool startedDashing;
     [SerializeField] private bool isDashing;
     [SerializeField] private float dashSpeed = 10f;
     [SerializeField] private float dashDuration = 0.2f;
@@ -226,7 +229,31 @@ public class Player : MonoBehaviour
         anim.SetBool("isWalking", isWalking);
         anim.SetBool("isJumping", isJumping);
         anim.SetBool("isWallSliding", isWallSliding);
+
         anim.SetBool("isDashing", isDashing);
+
+        if (isDashing && !startedDashing)
+        {
+            anim.SetTrigger("startDash");
+            startedDashing = true;
+        }
+        else if (!isDashing && startedDashing)
+        {
+            startedDashing = false;
+        }
+
+        isFalling = rb.linearVelocity.y < 0f && !isWallSliding && !isDashing;
+        anim.SetBool("isFalling", isFalling);
+
+        if (isFalling && !startedFalling)
+        {
+            anim.SetTrigger("startFall");
+            startedFalling = true;
+        }
+        else if (!isFalling && startedFalling)
+        {
+            startedFalling = false;
+        }
     }
     #endregion
 
