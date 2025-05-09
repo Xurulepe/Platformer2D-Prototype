@@ -47,10 +47,19 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private Animator anim;
 
+    private int playerLayer;
+    private int dashThroughLayer;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+    }
+
+    private void Start()
+    {
+        playerLayer = LayerMask.NameToLayer("Player");
+        dashThroughLayer = LayerMask.NameToLayer("DashThrough");
     }
 
     private void Update()
@@ -148,6 +157,7 @@ public class Player : MonoBehaviour
         isDashing = true;
         canDash = false;
 
+        Physics2D.IgnoreLayerCollision(playerLayer, dashThroughLayer, true);
         rb.linearVelocity = new Vector2(transform.localScale.x * dashSpeed, rb.linearVelocity.y);
 
         Invoke(nameof(EndDash), dashDuration);
@@ -157,6 +167,7 @@ public class Player : MonoBehaviour
     private void EndDash()
     {
         isDashing = false;
+        Physics2D.IgnoreLayerCollision(playerLayer, dashThroughLayer, false);
     }
 
     private void ResetDash()
