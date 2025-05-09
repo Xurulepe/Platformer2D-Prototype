@@ -242,7 +242,7 @@ public class Player : MonoBehaviour
             startedDashing = false;
         }
 
-        isFalling = rb.linearVelocity.y < 0f && !isWallSliding && !isDashing;
+        isFalling = rb.linearVelocity.y < 0f && !isWallSliding && !isDashing && !IsGrounded();
         anim.SetBool("isFalling", isFalling);
 
         if (isFalling && !startedFalling)
