@@ -38,11 +38,12 @@ public class Player : MonoBehaviour
     [SerializeField] private float dashDuration = 0.2f;
     [SerializeField] private float dashCooldown = 1f;
 
+    /*
     [Header("Item Collection")]
     [SerializeField] private Transform itemCheckPos;
     [SerializeField] private Vector2 itemCheckSize = new Vector2(1f, 1.5f);
     [SerializeField] private LayerMask itemLayer;
-
+    */
     // Component references
     private Rigidbody2D rb;
     private Animator anim;
@@ -64,7 +65,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        CheckForItems();
+        //CheckForItems();
 
         GroundCheck();
         WallSlideCheck();
@@ -269,6 +270,7 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Item Collection
+    /*
     private void CheckForItems()
     {
         Vector2 boxcastDirection = new Vector2(transform.localScale.x, 0f);
@@ -288,6 +290,7 @@ public class Player : MonoBehaviour
         Debug.Log("Coin collected!");
         coin.SetActive(false);
     }
+    */
     #endregion
 
     private void OnDrawGizmosSelected()
@@ -295,6 +298,6 @@ public class Player : MonoBehaviour
         Gizmos.color = Color.red;
         //Gizmos.DrawWireCube(groundCheckPos.position, groundCheckSize);
         //Gizmos.DrawWireCube(wallCheckPos.position, wallCheckSize);
-        Gizmos.DrawWireCube(itemCheckPos.position, itemCheckSize);
+        //Gizmos.DrawWireCube(itemCheckPos.position, itemCheckSize);
     }
 }
