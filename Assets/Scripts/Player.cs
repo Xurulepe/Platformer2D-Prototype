@@ -37,6 +37,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float dashSpeed = 10f;
     [SerializeField] private float dashDuration = 0.2f;
     [SerializeField] private float dashCooldown = 1f;
+    public bool dashUpgraded = false;
 
     /*
     [Header("Item Collection")]
@@ -158,7 +159,8 @@ public class Player : MonoBehaviour
         isDashing = true;
         canDash = false;
 
-        Physics2D.IgnoreLayerCollision(playerLayer, dashThroughLayer, true);
+        if (dashUpgraded)
+            IgnoreLayerCollision(true);
         rb.linearVelocity = new Vector2(transform.localScale.x * dashSpeed, rb.linearVelocity.y);
 
         Invoke(nameof(EndDash), dashDuration);
@@ -168,12 +170,18 @@ public class Player : MonoBehaviour
     private void EndDash()
     {
         isDashing = false;
-        Physics2D.IgnoreLayerCollision(playerLayer, dashThroughLayer, false);
+        if (dashUpgraded)
+            IgnoreLayerCollision(false);
     }
 
     private void ResetDash()
     {
         canDash = true;
+    }
+
+    private void IgnoreLayerCollision(bool value)
+    {
+        Physics2D.IgnoreLayerCollision(playerLayer, dashThroughLayer, value);
     }
     #endregion
 
