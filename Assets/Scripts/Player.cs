@@ -6,17 +6,17 @@ public class Player : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private Vector2 moveInput;
-    [SerializeField] private bool isWalking;
-    [SerializeField] private bool startedFalling;
-    [SerializeField] private bool isFalling;
+    private bool isWalking;
+    private bool startedFalling;
+    private bool isFalling;
 
     [Header("Jump")]
     [SerializeField] private float jumpForce = 5f;
-    [SerializeField] private Vector2 groundJumpDirection = Vector2.up;
-    [SerializeField] private Vector2 wallJumpDirection;
-    [SerializeField] private bool doubleJump;
-    [SerializeField] private bool wallJumping;
-    [SerializeField] private bool isJumping;
+    private Vector2 groundJumpDirection = Vector2.up;
+    private Vector2 wallJumpDirection;
+    private bool doubleJump;
+    private bool wallJumping;
+    private bool isJumping;
 
     [Header("Ground")]
     [SerializeField] private Transform groundCheckPos;
@@ -27,16 +27,16 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform wallCheckPos;
     [SerializeField] private Vector2 wallCheckSize = new Vector2(0.3f, 1.7f);
     [SerializeField] private LayerMask wallLayer;
-    [SerializeField] private bool isWallSliding;
+    private bool isWallSliding;
     [SerializeField] private float wallSlidindSpeed;
 
     [Header("Dash")]
-    [SerializeField] private bool canDash = true;
-    [SerializeField] private bool startedDashing;
-    [SerializeField] private bool isDashing;
     [SerializeField] private float dashSpeed = 10f;
     [SerializeField] private float dashDuration = 0.2f;
     [SerializeField] private float dashCooldown = 1f;
+    private bool canDash = true;
+    private bool startedDashing;
+    private bool isDashing;
     public bool dashUpgraded = false;
 
     /*
@@ -51,6 +51,7 @@ public class Player : MonoBehaviour
 
     private int playerLayer;
     private int dashThroughLayer;
+    private float initialGravityScale;
 
     private void Awake()
     {
@@ -62,6 +63,8 @@ public class Player : MonoBehaviour
     {
         playerLayer = LayerMask.NameToLayer("Player");
         dashThroughLayer = LayerMask.NameToLayer("DashThrough");
+
+        initialGravityScale = rb.gravityScale;
     }
 
     private void Update()
@@ -136,6 +139,7 @@ public class Player : MonoBehaviour
     private void Jump(Vector2 jumpDirection)
     {
         Invoke(nameof(UpdateJump), 0.1f);
+        rb.linearVelocityY = 0f;
         rb.AddForce(jumpDirection * jumpForce, ForceMode2D.Impulse);
     }
 
@@ -161,7 +165,9 @@ public class Player : MonoBehaviour
 
         if (dashUpgraded)
             IgnoreLayerCollision(true);
-        rb.linearVelocity = new Vector2(transform.localScale.x * dashSpeed, rb.linearVelocity.y);
+
+        rb.gravityScale = 0f;
+        rb.linearVelocity = new Vector2(transform.localScale.x * dashSpeed, 0f);
 
         Invoke(nameof(EndDash), dashDuration);
         Invoke(nameof(ResetDash), dashCooldown);
@@ -170,6 +176,10 @@ public class Player : MonoBehaviour
     private void EndDash()
     {
         isDashing = false;
+
+        rb.gravityScale = initialGravityScale;
+        rb.linearVelocity = Vector3.zero;
+
         if (dashUpgraded)
             IgnoreLayerCollision(false);
     }
