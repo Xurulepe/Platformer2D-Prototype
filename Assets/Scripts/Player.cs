@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform wallCheckPos;
     [SerializeField] private Vector2 wallCheckSize = new Vector2(0.3f, 1.7f);
     [SerializeField] private LayerMask wallLayer;
+    private bool startedWallSliding;
     private bool isWallSliding;
     [SerializeField] private float wallSlidindSpeed;
 
@@ -39,12 +40,6 @@ public class Player : MonoBehaviour
     private bool isDashing;
     public bool dashUpgraded = false;
 
-    /*
-    [Header("Item Collection")]
-    [SerializeField] private Transform itemCheckPos;
-    [SerializeField] private Vector2 itemCheckSize = new Vector2(1f, 1.5f);
-    [SerializeField] private LayerMask itemLayer;
-    */
     // Component references
     private Rigidbody2D rb;
     private Animator anim;
@@ -258,7 +253,18 @@ public class Player : MonoBehaviour
     {
         anim.SetBool("isWalking", isWalking);
         anim.SetBool("isJumping", isJumping);
+
         anim.SetBool("isWallSliding", isWallSliding);
+
+        if (isWallSliding && !startedWallSliding)
+        {
+            anim.SetTrigger("startWallSlide");
+            startedWallSliding = true;
+        }
+        else if (!isWallSliding && startedWallSliding)
+        {
+            startedWallSliding = false;
+        }
 
         anim.SetBool("isDashing", isDashing);
 
@@ -287,35 +293,10 @@ public class Player : MonoBehaviour
     }
     #endregion
 
-    #region Item Collection
-    /*
-    private void CheckForItems()
-    {
-        Vector2 boxcastDirection = new Vector2(transform.localScale.x, 0f);
-        RaycastHit2D hit = Physics2D.BoxCast(itemCheckPos.position, itemCheckSize, 0f, boxcastDirection, 0f, itemLayer);
-
-        if (hit.collider == null) return;
-
-        if (hit.collider.CompareTag("Coin"))
-        {
-            CollectCoin(hit.collider.gameObject);
-        }
-        // implementar outros itens / power ups
-    }
-
-    private void CollectCoin(GameObject coin)
-    {
-        Debug.Log("Coin collected!");
-        coin.SetActive(false);
-    }
-    */
-    #endregion
-
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         //Gizmos.DrawWireCube(groundCheckPos.position, groundCheckSize);
         //Gizmos.DrawWireCube(wallCheckPos.position, wallCheckSize);
-        //Gizmos.DrawWireCube(itemCheckPos.position, itemCheckSize);
     }
 }
