@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
     private bool doubleJump;
     private bool wallJumping;
     private bool isJumping;
+    [SerializeField] private float coyoteTime = 0.2f;
+    [SerializeField] private float coyoteTimeCounter;
 
     [Header("Ground")]
     [SerializeField] private Transform groundCheckPos;
@@ -64,11 +66,14 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        //CheckForItems();
+        CoyoteTimeController();
 
         GroundCheck();
+
         WallSlideCheck();
+
         Flip();
+
         Animation();
     }
 
@@ -112,7 +117,7 @@ public class Player : MonoBehaviour
     #region Player jump
     public void SetJump(InputAction.CallbackContext value)
     {
-        if (value.performed && IsGrounded())
+        if (value.performed && coyoteTimeCounter > 0f)  //IsGrounded()
         {
             Jump(groundJumpDirection);
             doubleJump = true;
@@ -136,11 +141,24 @@ public class Player : MonoBehaviour
         Invoke(nameof(UpdateJump), 0.1f);
         rb.linearVelocityY = 0f;
         rb.AddForce(jumpDirection * jumpForce, ForceMode2D.Impulse);
+        coyoteTimeCounter = 0f;
     }
 
-    void UpdateJump()
+    private void UpdateJump()
     {
         isJumping = true;
+    }
+
+    private void CoyoteTimeController()
+    {
+        if (IsGrounded())
+        {
+            coyoteTimeCounter = coyoteTime;
+        }
+        else
+        {
+            coyoteTimeCounter -= Time.deltaTime;
+        }
     }
     #endregion
 

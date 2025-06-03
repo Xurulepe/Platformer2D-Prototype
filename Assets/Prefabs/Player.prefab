@@ -289,6 +289,8 @@ MonoBehaviour:
   moveSpeed: 5
   moveInput: {x: 0, y: 0}
   jumpForce: 7
+  coyoteTime: 0.2
+  coyoteTimeCounter: 0
   groundCheckPos: {fileID: 3162078861179384742}
   groundCheckSize: {x: 0.7, y: 0.1}
   groundLayer:
