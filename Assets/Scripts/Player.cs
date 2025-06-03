@@ -19,6 +19,9 @@ public class Player : MonoBehaviour
     private bool isJumping;
     [SerializeField] private float coyoteTime = 0.2f;
     [SerializeField] private float coyoteTimeCounter;
+    [SerializeField] private bool jumpButtonPressed;
+    [SerializeField] private float jumpBufferTime = 0.2f;
+    [SerializeField] private float jumpBufferCounter;
 
     [Header("Ground")]
     [SerializeField] private Transform groundCheckPos;
@@ -67,6 +70,8 @@ public class Player : MonoBehaviour
     private void Update()
     {
         CoyoteTimeController();
+
+        JumpBufferingController();
 
         GroundCheck();
 
@@ -117,22 +122,29 @@ public class Player : MonoBehaviour
     #region Player jump
     public void SetJump(InputAction.CallbackContext value)
     {
-        if (value.performed && coyoteTimeCounter > 0f)  //IsGrounded()
+        if (value.performed)
+        {
+            jumpBufferCounter = jumpBufferTime;
+        }
+
+        if (value.performed && coyoteTimeCounter > 0f)  //value.performed && IsGrounded()
         {
             Jump(groundJumpDirection);
             doubleJump = true;
+            Debug.Log("grounded jump");
         }
-        else if (value.performed && IsWalled())
+        else if (value.performed && IsWalled())  
         {
             Jump(wallJumpDirection);
             doubleJump = true;
             wallJumping = true;
             Invoke(nameof(ForceFlip), 0.1f);
         }
-        else if (value.performed && doubleJump)
+        else if (value.performed && doubleJump)  
         {
             Jump(groundJumpDirection);
             doubleJump = false;
+            Debug.Log("double jump");
         }
     }
 
@@ -142,6 +154,7 @@ public class Player : MonoBehaviour
         rb.linearVelocityY = 0f;
         rb.AddForce(jumpDirection * jumpForce, ForceMode2D.Impulse);
         coyoteTimeCounter = 0f;
+        jumpBufferCounter = 0f;
     }
 
     private void UpdateJump()
@@ -158,6 +171,17 @@ public class Player : MonoBehaviour
         else
         {
             coyoteTimeCounter -= Time.deltaTime;
+        }
+    }
+
+    private void JumpBufferingController()
+    {
+        jumpBufferCounter -= Time.deltaTime;
+
+        if (IsGrounded() && jumpBufferCounter > 0)
+        {
+            Jump(groundJumpDirection);
+            Debug.Log("buffered jump");
         }
     }
     #endregion
