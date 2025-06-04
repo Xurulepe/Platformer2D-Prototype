@@ -18,10 +18,9 @@ public class Player : MonoBehaviour
     private bool wallJumping;
     private bool isJumping;
     [SerializeField] private float coyoteTime = 0.2f;
-    [SerializeField] private float coyoteTimeCounter;
-    [SerializeField] private bool jumpButtonPressed;
+    private float coyoteTimeCounter;
     [SerializeField] private float jumpBufferTime = 0.2f;
-    [SerializeField] private float jumpBufferCounter;
+    private float jumpBufferCounter;
 
     [Header("Ground")]
     [SerializeField] private Transform groundCheckPos;
@@ -122,25 +121,24 @@ public class Player : MonoBehaviour
     #region Player jump
     public void SetJump(InputAction.CallbackContext value)
     {
-        if (value.performed)
-        {
-            jumpBufferCounter = jumpBufferTime;
-        }
+        if (!value.performed) return;
 
-        if (value.performed && coyoteTimeCounter > 0f)  //value.performed && IsGrounded()
-        {
-            Jump(groundJumpDirection);
-            doubleJump = true;
-            Debug.Log("grounded jump");
-        }
-        else if (value.performed && IsWalled())  
+        jumpBufferCounter = jumpBufferTime;
+
+        if (IsWalled())  
         {
             Jump(wallJumpDirection);
             doubleJump = true;
             wallJumping = true;
             Invoke(nameof(ForceFlip), 0.1f);
         }
-        else if (value.performed && doubleJump)  
+        else if (coyoteTimeCounter > 0f)  // IsGrounded()
+        {
+            Jump(groundJumpDirection);
+            doubleJump = true;
+            Debug.Log("grounded jump");
+        }
+        else if (doubleJump && !IsGrounded())  
         {
             Jump(groundJumpDirection);
             doubleJump = false;
