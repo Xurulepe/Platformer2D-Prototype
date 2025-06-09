@@ -125,24 +125,25 @@ public class Player : MonoBehaviour
 
         jumpBufferCounter = jumpBufferTime;
 
-        if (IsWalled())  
+        if (IsWalled() && !IsGrounded())  
         {
             Jump(wallJumpDirection);
             doubleJump = true;
             wallJumping = true;
             Invoke(nameof(ForceFlip), 0.1f);
+            //Debug.Log("walled jump");
         }
         else if (coyoteTimeCounter > 0f)  // IsGrounded()
         {
             Jump(groundJumpDirection);
             doubleJump = true;
-            Debug.Log("grounded jump");
+            //Debug.Log("grounded jump");
         }
         else if (doubleJump && !IsGrounded())  
         {
             Jump(groundJumpDirection);
             doubleJump = false;
-            Debug.Log("double jump");
+            //Debug.Log("double jump");
         }
     }
 
@@ -179,7 +180,6 @@ public class Player : MonoBehaviour
         if (IsGrounded() && jumpBufferCounter > 0)
         {
             Jump(groundJumpDirection);
-            Debug.Log("buffered jump");
         }
     }
     #endregion

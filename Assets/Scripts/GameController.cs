@@ -7,4 +7,10 @@ public class GameController : MonoBehaviour
     {
         SceneManager.LoadScene("Level1");
     }
+
+    public void QuitGame()
+    {
+        Debug.Log("Quit game!");
+        Application.Quit();
+    }
 }
