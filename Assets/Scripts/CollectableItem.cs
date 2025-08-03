@@ -11,6 +11,7 @@ public class CollectableItem : MonoBehaviour
         {
             if (powerUp)
             {
+                AudioManager.Instance.PlaySFX("PowerUpCollect");
                 var player = other.GetComponent<Player>();
                 UpgradePlayerSkill(player);
             }

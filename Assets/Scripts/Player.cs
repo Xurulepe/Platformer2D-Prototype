@@ -131,18 +131,21 @@ public class Player : MonoBehaviour
             doubleJump = true;
             wallJumping = true;
             Invoke(nameof(ForceFlip), 0.1f);
+            AudioManager.Instance.PlaySFX("Jump");
             //Debug.Log("walled jump");
         }
         else if (coyoteTimeCounter > 0f)  // IsGrounded()
         {
             Jump(groundJumpDirection);
             doubleJump = true;
+            AudioManager.Instance.PlaySFX("Jump");
             //Debug.Log("grounded jump");
         }
         else if (doubleJump && !IsGrounded())  
         {
             Jump(groundJumpDirection);
             doubleJump = false;
+            AudioManager.Instance.PlaySFX("AirJump");
             //Debug.Log("double jump");
         }
     }

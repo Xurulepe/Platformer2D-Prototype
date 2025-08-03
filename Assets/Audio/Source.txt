@@ -1,0 +1,37 @@
+Jump SFX: 
+Cartoon Jump
+https://pixabay.com/sound-effects/cartoon-jump-6462/
+
+Level complete SFX: 
+"Game Level Completed"
+https://mixkit.co/free-sound-effects/goal/
+
+Button selected:
+"Player jumping in a video game"
+https://mixkit.co/free-sound-effects/video-game/
+
+Game Over SFX:
+"Horror lose"
+https://mixkit.co/free-sound-effects/lose/
+
+Menu Music:
+"Space Music"
+https://opengameart.org/content/space-music-3
+
+Level Music:
+"Space Music 2"
+https://opengameart.org/content/space-music-3
+
+Coin Collect:
+coin sound from zip file: "Sound02wav.zip"
+https://opengameart.org/content/soundpack-02
+
+PowerUp Collect:
+"Powerup__006" from zip file "SFX- The Ultimate 2017 8 bit Mini pack.zip"
+https://opengameart.org/content/sfx-the-ultimate-2017-8-bit-mini-pack
+
+Air jump:
+"Jump__009" from zip file "SFX- The Ultimate 2017 8 bit Mini pack.zip"
+https://opengameart.org/content/sfx-the-ultimate-2017-8-bit-mini-pack
+
+
