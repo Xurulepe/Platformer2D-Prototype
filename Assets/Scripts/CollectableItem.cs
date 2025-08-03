@@ -15,6 +15,10 @@ public class CollectableItem : MonoBehaviour
                 var player = other.GetComponent<Player>();
                 UpgradePlayerSkill(player);
             }
+            else  // coin
+            {
+                AudioManager.Instance.PlaySFX("CoinCollect");
+            }
 
             Destroy(gameObject);
         }

@@ -68,6 +68,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: f89104a247abc1b409798b8b87d91268, type: 3}
   musicSource: {fileID: 2539276649397907178}
   SFXSource: {fileID: 1450545439182736583}
+  audioMixer: {fileID: 24100000, guid: 909019bfb48e2774ea17e9b13434a2c4, type: 2}
 --- !u!1 &3140138084623886828
 GameObject:
   m_ObjectHideFlags: 0
@@ -109,7 +110,7 @@ AudioSource:
   m_GameObject: {fileID: 3140138084623886828}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 8363391855205423477, guid: 909019bfb48e2774ea17e9b13434a2c4, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
@@ -238,7 +239,7 @@ AudioSource:
   m_GameObject: {fileID: 4860409297922853214}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 2150721786213152145, guid: 909019bfb48e2774ea17e9b13434a2c4, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
