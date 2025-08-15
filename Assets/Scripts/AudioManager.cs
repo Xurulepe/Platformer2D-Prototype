@@ -36,7 +36,7 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        LoadVolume();
+        //LoadVolume();
     }
 
     #region PlaySound
