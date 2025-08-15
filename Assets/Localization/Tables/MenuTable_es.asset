@@ -30,6 +30,46 @@ MonoBehaviour:
     m_Localized: "Portugu\xE9s"
     m_Metadata:
       m_Items: []
+  - m_Id: 35918572699648
+    m_Localized: Volver
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35859416236032
+    m_Localized: "Efectos de Sonido\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35827879264256
+    m_Localized: "M\xFAsica"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35758887157760
+    m_Localized: Volumen Maestro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35639269801984
+    m_Localized: Idioma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35519849578496
+    m_Localized: Sonidos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31756313182208
+    m_Localized: Salir
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31697756504064
+    m_Localized: "Cr\xE9ditos"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31655314341888
+    m_Localized: Opciones
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31536275800064
+    m_Localized: Jugar
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

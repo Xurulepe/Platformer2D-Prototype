@@ -27,6 +27,48 @@ MonoBehaviour:
     m_Key: 'Lang: Portuguese'
     m_Metadata:
       m_Items: []
+  - m_Id: 31536275800064
+    m_Key: 'MainMenu: Play'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31655314341888
+    m_Key: 'MainMenu: Options'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31697756504064
+    m_Key: 'MainMenu: Credits'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31756313182208
+    m_Key: 'MainMenu: Quit
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35519849578496
+    m_Key: 'OptionsMenu: Sounds'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35639269801984
+    m_Key: 'OptionsMenu: Language'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35758887157760
+    m_Key: 'SoundsMenu: MasterVolume'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35827879264256
+    m_Key: 'SoundsMenu: MusicVolume'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35859416236032
+    m_Key: 'SoundsMenu: SFXVolume'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35918572699648
+    m_Key: 'Menu: Back'
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
