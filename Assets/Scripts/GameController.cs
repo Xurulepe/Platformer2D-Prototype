@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
@@ -14,6 +15,13 @@ public class GameController : MonoBehaviour
             AudioManager.Instance.PlayMusic("LevelMusic");
         }
     }
+
+    #region LANGUAGE CONTROLLER
+    public void ChangeLanguage(int language)
+    {
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[language];
+    }
+    #endregion
 
     public void LoadScene()
     {
