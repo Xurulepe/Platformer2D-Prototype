@@ -36,7 +36,8 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        //LoadVolume();
+        //Invoke(nameof(LoadVolume), .2f);
+        //Debug.Log("start");
     }
 
     #region PlaySound
@@ -86,7 +87,7 @@ public class AudioManager : MonoBehaviour
     }
     #endregion
 
-    private void LoadVolume()
+    public void LoadVolume()
     {
         if (PlayerPrefs.HasKey("MasterVolume"))
         {
@@ -103,5 +104,12 @@ public class AudioManager : MonoBehaviour
             audioMixer.SetFloat("SFXVolume", PlayerPrefs.GetFloat("SFXVolume"));
             _sFXVolumeSlider.value = PlayerPrefs.GetFloat("SFXVolume");
         }
+    }
+
+    public void GetSliders(MenuController menu)
+    {
+        _masterVolumeSlider = menu.MasterSlider;
+        _musicVolumeSlider = menu.MusicSlider;
+        _sFXVolumeSlider = menu.SFXSlider;
     }
 }
